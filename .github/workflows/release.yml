@@ -8,9 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Verify char.dll exists
+        run: test -f char.dll || (echo "char.dll not found" && exit 1)
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }}
           files: char.dll
           generate_release_notes: true
         env:
