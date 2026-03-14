@@ -8,13 +8,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - run: git lfs pull
       - name: Verify char.dll exists
         run: test -f char.dll || (echo "char.dll not found" && exit 1)
+      - name: Verify NuvaOverlay.exe exists
+        run: test -f NuvaOverlay.exe || (echo "NuvaOverlay.exe not found" && exit 1)
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          files: char.dll
+          files: |
+            char.dll
+            NuvaOverlay.exe
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
